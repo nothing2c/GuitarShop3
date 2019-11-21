@@ -1,0 +1,106 @@
+@startuml
+
+ skinparam ClassAttributeIconSize 0
+
+class Guitar
+{
++ getSpec(): GuitarSpec
+}
+
+class Mandolin {
++ getSpec(): MandolinSpec
+}
+
+abstract class Instrument{
+- serialNumber: String
+- price: double
++ getSerialNumber(): String
++ getPrice(): double
++ setPrice(): double
+}
+
+abstract class InstrumentSpec {
+- builder: Builder
+- model: String
+- type: Type
+- backWood: Wood
+- topWood: Wood
++ getBuilder(): Builder
++ getModel(): String
++ getType(): Type
++ getBackWood(): Wood
++ getTopWood(): Wood
++ matches(InstrumentSpec): boolean
+}
+
+class GuitarSpec
+{
+- numStrings: NumStrings
++ getNumStrings(): String
++ matches(GuitarSpec): boolean
+}
+
+class MandolinSpec{
++ getStyle(): Style
++ matches(MandolinSpec): boolean
+}
+
+class Inventory
+{
+- instruments: List
++ search(InstrumentSpec): List
++ addInstrument(Instrument)
++ getInstrument() : Guitar
+}
+
+enum Builder
+{
+FENDER
+GIBSON
+toString(): String
+}
+
+enum Type
+{
+ELECTRIC
+ACOUSTIC
+toString(): String
+}
+
+enum Wood
+{
+CEDAR
+ALDER
+MAHOGANY
+toString(): String
+}
+
+enum NumStrings
+{
+SIX
+TWELVE
+toString(): String
+}
+
+enum Style
+{
+A
+F
+toString(): String
+}
+
+Instrument o-- InstrumentSpec
+Instrument --o Inventory: aggregation
+Mandolin --|> Instrument
+Guitar --|> Instrument
+InstrumentSpec --> "1" Wood
+InstrumentSpec --> "1" Builder
+InstrumentSpec --> "1" Type
+GuitarSpec --> "1" NumStrings
+MandolinSpec -->  "1" Style
+MandolinSpec --|>  InstrumentSpec
+GuitarSpec --|>  InstrumentSpec
+Guitar "0..*" -- GuitarSpec :has a
+Mandolin "0..*" -- MandolinSpec :has a
+
+@enduml
